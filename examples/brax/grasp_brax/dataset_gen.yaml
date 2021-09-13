@@ -1,0 +1,59 @@
+# An example of config file for training/testing data generation
+# This example contains the full set of allowed parameters --> Some of them can be ignored
+
+# The name of the environment to load
+env_name: grasp
+
+# # Extra arguments to build the environment
+# env_extra_args:
+#   action_repeat: 1          # This is an integer >=1 that changes dt in each environment
+#   episode_length: 1000      # Determine when the episode ends
+
+# File used to save the dataset: Without any extension
+output_file: ./grasp_brax/datatrain
+
+# Initial seed used by the random number generator for reproducibility
+seed: 42
+
+# Save the number of rollout
+n_rollout: 4
+
+# When recording the data, reset the environment after max_episode_length
+max_episode_length: 500
+
+# Number of training trajectories of size max_episode_length
+num_data_train: [1, 25, 75, 200, 500]
+
+# Number of testing trajectories of size max_episode_length
+num_data_test: 10
+
+################### Colococation setting
+# Number of trajectories to use when generating colocations points
+num_data_colocation: 11
+# Additional noise when generating colocation data
+extra_noise_coloc: 0.2
+##################################################################
+
+# # In case a policy to generate actions is given 
+disable_substep: True
+
+control_policy: 
+  file: ./grasp_brax/policy_learned
+  n_obs: 132
+  n_act: 19
+  normalize: True
+  policy: ppo
+  noise_train: 0.15
+  noise_test: 0.3
+
+# Bounds on the control input of the training set
+utrain_lb: -0.3
+utrain_ub: 0.3
+
+# Bounds on the control input of the testing set --> Should be changed
+# according to the training set for demonstrating generalization
+utest_lb: -0.6
+utest_ub: 0.6
+
+# Save a video showing the trajectory for the testing and training
+save_video: false

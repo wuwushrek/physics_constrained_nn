@@ -1,0 +1,7 @@
+jax>=0.2.16
+jaxlib>=0.1.68
+brax>=0.0.5
+dm-haiku @ git+git://github.com/deepmind/dm-haiku
+optax @ git+git://github.com/deepmind/optax.git
+cppimport>=21.3.7
+pybind11>=2.7.0

@@ -1,0 +1,92 @@
+# An example of config file for the parameters used to train a single 
+# neural network to predict the next state based on the current state and input signal 
+
+# The file that contains the training and testing dataset
+train_data_file: ./grasp_brax/datatrain.pkl
+
+# The file used to save the results of the training -> No extension
+out_file: ./grasp_brax/base_train
+
+# An identifier to uniquely name the parameter of this NN
+model_name: grasp_base
+
+# Optimizer and its parameters
+optimizer:
+  name: adam
+  learning_rate_init: 0.01
+  learning_rate_end: 0.001    # Decay the learning rate until the value
+  weight_decay: 0.0001        # Weight decay coefficient
+  grad_clip: 0.005            # Gradient clip coefficient
+  # params:
+    # learning_rate: 0.01
+    
+# The seed for randomness and reproducibility
+seed: [101, 301, 501]
+
+# Batch size 
+batch_size: 64
+
+# L2 regularization penalty term
+pen_l2: 0.0
+
+pen_constr:
+  batch_size_train: 12
+  batch_size_test: 12
+  batch_size_coloc: 40
+  pen_eq_init: 0.001
+  beta_eq: 1.5
+  pen_ineq_init: 0.001
+  beta_ineq: 1.5
+  num_eq_constr: 0 # Redefined in the code
+  num_ineq_constr: 0 # Redefined in the code for brax environments
+  tol_constraint_eq: 0.00005
+  tol_constraint_ineq: 0.00005
+
+# The baseline ODESolver algorithm
+baseline: base
+
+# Define the neural network params and its initialization -> This depends on the type of side information
+# Example with no side information
+nn_params:
+  # Specify the side information
+  type_sideinfo: 0 # 0 means None, 1 : Coriolis/Joints, 2: Coriolis/Joints + Actuator, 3: Coriolis/Joints + Part Actuator, 4: All except contact forces 
+
+  vector_field:
+    output_sizes: [512, 512]          # Specify the size of the hidden layers only
+    activation: relu                  # Activation function
+    b_init:
+      initializer: Constant           # Initializer of the biais value
+      params:
+        constant: 0                   # arguments of Constant initlaizer
+    w_init:
+      initializer: RandomUniform      # Initializer of the weight values
+      params:
+        minval: -0.005
+        maxval: 0.005
+
+  # Define the remainder term neural network
+  apriori_encl:
+    output_sizes: [64,64,64]
+    activation: relu
+    b_init:
+      initializer: Constant           # Initializer of the biais value
+      params:
+        constant: 0                   # arguments of Constant initlaizer
+    w_init:
+      initializer: RandomUniform      # Initializer of the weight values
+      params:
+        minval: -0.001
+        maxval: 0.001
+
+# Total number of iterations
+num_gradient_iterations: 100000
+
+# Frequence of printing information and saving in the file
+freq_save: 500
+
+# An integer that specifies if applying early stopping or not.
+# Using early stopping criteria, patience specifies the number of step before deciding if we have the best solution or not
+patience: 10
+
+# Frequency at which to compute loss function on the training and testing
+freq_accuracy: [1.0, 100, 100]
