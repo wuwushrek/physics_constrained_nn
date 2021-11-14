@@ -1,6 +1,7 @@
 # Neural Networks with Physics-Informed Architectures and Constraints for Dynamical Systems Modeling
 
-This module builds custom deep neural networks to learn dynamics when prior physics knowledge and constraints about the underlying unknown dynamics are considered.
+This module builds custom deep neural networks to learn dynamics when prior physics knowledge and constraints about the underlying unknown dynamics are considered. 
+The corresponding paper can be found [here](https://arxiv.org/pdf/2109.06407.pdf).
 
 ## Installation
 
